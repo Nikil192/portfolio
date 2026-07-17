@@ -36,7 +36,6 @@ body {
     background-color: var(--bg-main);
     color: var(--text-main);
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
 }
 
@@ -52,6 +51,30 @@ body {
     opacity: 0.12;
     background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23888888' stroke-width='1.5' fill='none'%3E%3Cpath d='M20,20 L50,20 L70,40 L100,40' /%3E%3Ccircle cx='20' cy='20' r='3' fill='%23888888' /%3E%3Ccircle cx='100' cy='40' r='3' fill='%23888888' /%3E%3Cpath d='M150,80 L130,80 L110,60 L110,20' /%3E%3Ccircle cx='150' cy='80' r='3' fill='%23888888' /%3E%3Cpath d='M10,120 L30,140 L80,140' /%3E%3Ccircle cx='10' cy='120' r='3' fill='%23888888' /%3E%3Ccircle cx='80' cy='140' r='3' fill='%23888888' /%3E%3Cpath d='M180,160 L160,160 L140,180 L100,180' /%3E%3Ccircle cx='180' cy='160' r='3' fill='%23888888' /%3E%3Ccircle cx='100' cy='180' r='3' fill='%23888888' /%3E%3Crect x='80' y='80' width='40' height='40' /%3E%3Cline x1='75' y1='85' x2='80' y2='85' /%3E%3Cline x1='75' y1='95' x2='80' y2='95' /%3E%3Cline x1='75' y1='105' x2='80' y2='105' /%3E%3Cline x1='75' y1='115' x2='80' y2='115' /%3E%3Cline x1='120' y1='85' x2='125' y2='85' /%3E%3Cline x1='120' y1='95' x2='125' y2='95' /%3E%3Cline x1='120' y1='105' x2='125' y2='105' /%3E%3Cline x1='120' y1='115' x2='125' y2='115' /%3E%3C/g%3E%3C/svg%3E");
     background-size: 300px 300px;
+}
+
+/* Lit Circuit Background (Revealed by cursor) */
+.circuit-bg-lit {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.4; /* Softer, less distracting glow */
+    z-index: 0;
+    /* Same pattern but colored neon green (#00ff66) */
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%2300ff66' stroke-width='1.5' fill='none'%3E%3Cpath d='M20,20 L50,20 L70,40 L100,40' /%3E%3Ccircle cx='20' cy='20' r='3' fill='%2300ff66' /%3E%3Ccircle cx='100' cy='40' r='3' fill='%2300ff66' /%3E%3Cpath d='M150,80 L130,80 L110,60 L110,20' /%3E%3Ccircle cx='150' cy='80' r='3' fill='%2300ff66' /%3E%3Cpath d='M10,120 L30,140 L80,140' /%3E%3Ccircle cx='10' cy='120' r='3' fill='%2300ff66' /%3E%3Ccircle cx='80' cy='140' r='3' fill='%2300ff66' /%3E%3Cpath d='M180,160 L160,160 L140,180 L100,180' /%3E%3Ccircle cx='180' cy='160' r='3' fill='%2300ff66' /%3E%3Ccircle cx='100' cy='180' r='3' fill='%2300ff66' /%3E%3Crect x='80' y='80' width='40' height='40' /%3E%3Cline x1='75' y1='85' x2='80' y2='85' /%3E%3Cline x1='75' y1='95' x2='80' y2='95' /%3E%3Cline x1='75' y1='105' x2='80' y2='105' /%3E%3Cline x1='75' y1='115' x2='80' y2='115' /%3E%3Cline x1='120' y1='85' x2='125' y2='85' /%3E%3Cline x1='120' y1='95' x2='125' y2='95' /%3E%3Cline x1='120' y1='105' x2='125' y2='105' /%3E%3Cline x1='120' y1='115' x2='125' y2='115' /%3E%3C/g%3E%3C/svg%3E");
+    background-size: 300px 300px;
+    /* Tighter flashlight mask radius (200px) */
+    -webkit-mask-image: radial-gradient(circle 200px at var(--mouse-x, -1000px) var(--mouse-y, -1000px), black 0%, transparent 100%);
+    mask-image: radial-gradient(circle 200px at var(--mouse-x, -1000px) var(--mouse-y, -1000px), black 0%, transparent 100%);
+}
+
+
+
+[data-theme="light"] .circuit-bg-lit {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23008f39' stroke-width='1.5' fill='none'%3E%3Cpath d='M20,20 L50,20 L70,40 L100,40' /%3E%3Ccircle cx='20' cy='20' r='3' fill='%23008f39' /%3E%3Ccircle cx='100' cy='40' r='3' fill='%23008f39' /%3E%3Cpath d='M150,80 L130,80 L110,60 L110,20' /%3E%3Ccircle cx='150' cy='80' r='3' fill='%23008f39' /%3E%3Cpath d='M10,120 L30,140 L80,140' /%3E%3Ccircle cx='10' cy='120' r='3' fill='%23008f39' /%3E%3Ccircle cx='80' cy='140' r='3' fill='%23008f39' /%3E%3Cpath d='M180,160 L160,160 L140,180 L100,180' /%3E%3Ccircle cx='180' cy='160' r='3' fill='%23008f39' /%3E%3Ccircle cx='100' cy='180' r='3' fill='%23008f39' /%3E%3Crect x='80' y='80' width='40' height='40' /%3E%3Cline x1='75' y1='85' x2='80' y2='85' /%3E%3Cline x1='75' y1='95' x2='80' y2='95' /%3E%3Cline x1='75' y1='105' x2='80' y2='105' /%3E%3Cline x1='75' y1='115' x2='80' y2='115' /%3E%3Cline x1='120' y1='85' x2='125' y2='85' /%3E%3Cline x1='120' y1='95' x2='125' y2='95' /%3E%3Cline x1='120' y1='105' x2='125' y2='105' /%3E%3Cline x1='120' y1='115' x2='125' y2='115' /%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Photography Elegant Background */
@@ -105,9 +128,11 @@ body {
 .logo {
     text-decoration: none;
     color: var(--text-main);
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
     font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
 }
 
 .nav-links {
@@ -173,6 +198,16 @@ body {
     letter-spacing: -0.02em;
 }
 
+#tw-cursor {
+    font-weight: 300;
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 .hero-desc {
     font-size: 1.1rem;
     color: var(--text-muted);
@@ -221,18 +256,23 @@ body {
 
 /* Cards & Minimal Blocks */
 .card-minimal {
-    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    border: 1px solid var(--card-border);
-    background-color: var(--bg-card);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 1.5rem;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    transform-style: preserve-3d;
 }
 
 .card-minimal:hover {
-    border-color: var(--accent);
-    background-color: var(--bg-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 20px rgba(0, 255, 102, 0.15);
+    border-color: var(--card-border);
+    background: var(--bg-hover);
+    /* Transform is handled by JS for 3D effect, but we provide a default box-shadow on hover */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .card-minimal:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .flex-between {
@@ -564,6 +604,56 @@ footer {
     transform: translateY(0);
 }
 
+/* --- Camera Shutter Transition --- */
+.shutter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+}
+
+.shutter-top, .shutter-bottom {
+    width: 100%;
+    height: 50vh;
+    background-color: #070707; /* Pitch black */
+    transition: transform 0.4s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+.shutter-top {
+    transform: translateY(-100%);
+}
+
+.shutter-bottom {
+    transform: translateY(100%);
+}
+
+/* When active, the shutters close */
+.shutter-overlay.active .shutter-top,
+.shutter-overlay.active .shutter-bottom {
+    transform: translateY(0);
+}
+
+/* --- Polaroid Entrance Animation --- */
+.polaroid-reveal {
+    opacity: 0;
+    transform: translateY(80px) rotate(-8deg) scale(0.9);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy entrance */
+}
+
+.polaroid-reveal:nth-child(even) {
+    transform: translateY(80px) rotate(8deg) scale(0.9);
+}
+
+.polaroid-reveal.active {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+}
+
 /* --- Marquee Sections --- */
 .marquee-section {
     width: 100vw;
@@ -680,24 +770,20 @@ footer {
 
 /* --- Photography Page Themes --- */
 body.photography-page[data-photo-theme="light"] {
-    background-color: #e6d3c8; /* Soft beige to match image */
-    background-image: 
-        linear-gradient(rgba(230, 211, 200, 0.4), rgba(230, 211, 200, 0.4)), /* 40% fade (60% opacity) */
-        url('assets/photos/photography-pattern-bg.jpg');
-    background-size: auto, 500px;
-    background-repeat: repeat, repeat;
-    background-attachment: fixed, fixed;
-    color: #26241F; /* Deep charcoal */
+    background-color: #e6d3c8; /* Distinct vintage taupe/beige */
+    color: #2b2522;
 }
 
-/* Override accent color (no green on photography page) */
-body.photography-page[data-photo-theme="light"] .text-accent,
-body.photography-page[data-photo-theme="light"] .text-muted {
-    color: #8c7355; /* Rich earthy brown */
+body.photography-page[data-photo-theme="light"] .text-accent {
+    color: #8c5b3f; /* Deep brown accent for light mode */
 }
-body.photography-page[data-photo-theme="dark"] .text-accent,
-body.photography-page[data-photo-theme="dark"] .text-muted {
-    color: #ff66b2; /* Vibrant pink/magenta */
+
+body.photography-page[data-photo-theme="light"] .nav-links a {
+    color: #4a403a;
+}
+
+body.photography-page[data-photo-theme="light"] .nav-links a:hover {
+    color: #8c5b3f;
 }
 
 body.photography-page[data-photo-theme="light"] .navbar {
@@ -715,14 +801,14 @@ body.photography-page[data-photo-theme="light"] footer {
     color: #4A463B;
 }
 
+body.photography-page[data-photo-theme="dark"] .text-accent,
+body.photography-page[data-photo-theme="dark"] .text-muted {
+    color: #ff66b2; /* Vibrant pink/magenta */
+}
+
 /* Magenta Dark Theme for Photography */
 body.photography-page[data-photo-theme="dark"] {
-    background-color: #5c0533; /* Dark magenta base to tint the image */
-    background-image: url('assets/photos/photography-pattern-bg.jpg');
-    background-size: 500px;
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-blend-mode: multiply; /* Multiplies image with dark magenta for a rich 100% visible pattern */
+    background-color: #5c0533; /* Dark magenta base */
     color: #ffd1ec;
 }
 
@@ -925,4 +1011,303 @@ body.photography-page[data-photo-theme="dark"] .viewfinder-overlay .rec-light::b
 @keyframes scrollLeft {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+}
+
+/* --- View Transitions API (Awwwards Circular Theme Toggle) --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+    animation: theme-sweep 1.2s cubic-bezier(0.8, 0, 0.2, 1); /* Slow start, lightning fast middle, smooth stop */
+}
+
+@keyframes theme-sweep {
+    from {
+        clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+    }
+    to {
+        clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
+    }
+}
+
+/* --- Hardware Status LEDs --- */
+.status-led {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+    background-color: var(--accent);
+    box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+    animation: pulse-led 2s infinite alternate;
+    vertical-align: middle;
+}
+
+@keyframes pulse-led {
+    0% { opacity: 0.3; box-shadow: 0 0 2px var(--accent); }
+    100% { opacity: 1; box-shadow: 0 0 8px var(--accent), 0 0 15px var(--accent); }
+}
+
+[data-theme="light"] .status-led {
+    animation: pulse-led-light 2s infinite alternate;
+}
+
+@keyframes pulse-led-light {
+    0% { opacity: 0.4; box-shadow: 0 0 2px var(--accent); }
+    100% { opacity: 1; box-shadow: 0 0 6px var(--accent); }
+}
+
+/* --- Microcontroller Boot Sequence Loader --- */
+#boot-loader {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #050505; /* True black */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    transition: opacity 0.5s ease-out;
+}
+
+#boot-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.boot-text {
+    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: #00ff00; /* Classic terminal green */
+    line-height: 1.5;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.boot-line {
+    margin: 0;
+    opacity: 0;
+    animation: type-line 0.1s forwards;
+}
+
+@keyframes type-line {
+    to { opacity: 1; }
+}
+/* --- PCB Interactive Background --- */
+#pcb-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* Behind main content */
+    pointer-events: none; /* Let clicks pass through */
+}
+
+#pcb-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* The mask creates the flashlight effect */
+.pcb-mask {
+    -webkit-mask-image: radial-gradient(circle 350px at var(--mouse-x, -1000px) var(--mouse-y, -1000px), black 0%, transparent 100%);
+    mask-image: radial-gradient(circle 350px at var(--mouse-x, -1000px) var(--mouse-y, -1000px), black 0%, transparent 100%);
+}
+/* --- Smooth Scrolling --- */
+#smooth-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    will-change: transform;
+}
+
+
+
+/* --- Scroll Circuit Progress Bar --- */
+#scroll-circuit {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+
+.circuit-switch {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    background-color: var(--bg-alt);
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px var(--accent);
+}
+
+.circuit-wire {
+    width: 2px;
+    flex-grow: 1;
+    background-color: var(--border);
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.current-flow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%; /* Updated via JS */
+    background-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    border-radius: 2px;
+    transition: height 0.1s ease-out;
+}
+
+.circuit-led {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    background-color: var(--bg-alt);
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.circuit-led.lit {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent), inset 0 0 5px rgba(255,255,255,0.8);
+}
+
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}
+
+/* --- Project Slider --- */
+.project-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    padding: 4px; /* Move padding to wrapper */
+    padding-bottom: 30px;
+    box-sizing: border-box;
+}
+
+.project-slider-track {
+    display: flex;
+    flex-wrap: nowrap;
+    transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1);
+    width: 100%;
+    /* padding removed to fix translation drift */
+}
+
+.project-slider-track.no-transition {
+    transition: none !important;
+}
+
+#dust-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Let clicks pass through to cards */
+    z-index: 10;
+}
+
+#arcs-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.slide-card {
+    flex: 0 0 100%; /* Each card takes up 100% of the wrapper width */
+    max-width: 100%;
+    /* Increase typography for impact since it's full width */
+    padding: 3rem 2rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+}
+
+.slide-card.faded-out {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* Disable the green LED border hover effect specifically for slide cards */
+.slide-card:hover {
+    border-color: var(--card-border) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.slide-card .card-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.slide-card .card-desc {
+    font-size: 1.1rem;
+    max-width: 800px;
+}
+
+.project-slider-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.nav-btn {
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.nav-btn.active {
+    background-color: var(--bg-alt);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
 }

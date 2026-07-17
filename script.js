@@ -14,13 +14,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (themeToggleBtn) {
         const themeIcon = themeToggleBtn.querySelector('i');
-        themeToggleBtn.addEventListener('click', () => {
+        themeToggleBtn.addEventListener('click', (e) => {
             const currentTheme = htmlElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('portfolio-theme', newTheme);
-            updateThemeIcon(newTheme, themeIcon);
+            // Get click coordinates for the circular animation
+            const x = e.clientX;
+            const y = e.clientY;
+            document.documentElement.style.setProperty('--click-x', `${x}px`);
+            document.documentElement.style.setProperty('--click-y', `${y}px`);
+
+            // Check if browser supports View Transitions API
+            if (!document.startViewTransition) {
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('portfolio-theme', newTheme);
+                updateThemeIcon(newTheme, themeIcon);
+                return;
+            }
+
+            // Start the circular wipe view transition
+            document.startViewTransition(() => {
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('portfolio-theme', newTheme);
+                updateThemeIcon(newTheme, themeIcon);
+            });
         });
     }
 
@@ -42,13 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.setAttribute('data-photo-theme', savedPhotoTheme);
         updatePhotoThemeIcon(savedPhotoTheme, photoThemeIcon);
 
-        photoThemeToggleBtn.addEventListener('click', () => {
+        photoThemeToggleBtn.addEventListener('click', (e) => {
             const currentTheme = document.body.getAttribute('data-photo-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            document.body.setAttribute('data-photo-theme', newTheme);
-            localStorage.setItem('photo-theme', newTheme);
-            updatePhotoThemeIcon(newTheme, photoThemeIcon);
+            // Get click coordinates for the circular animation
+            const x = e.clientX;
+            const y = e.clientY;
+            document.documentElement.style.setProperty('--click-x', `${x}px`);
+            document.documentElement.style.setProperty('--click-y', `${y}px`);
+
+            if (!document.startViewTransition) {
+                document.body.setAttribute('data-photo-theme', newTheme);
+                localStorage.setItem('photo-theme', newTheme);
+                updatePhotoThemeIcon(newTheme, photoThemeIcon);
+                return;
+            }
+
+            document.startViewTransition(() => {
+                document.body.setAttribute('data-photo-theme', newTheme);
+                localStorage.setItem('photo-theme', newTheme);
+                updatePhotoThemeIcon(newTheme, photoThemeIcon);
+            });
         });
     }
 
@@ -62,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Scroll Reveal Animation using Intersection Observer
-    const reveals = document.querySelectorAll('.reveal, .photo-reveal');
+    const reveals = document.querySelectorAll('.reveal, .photo-reveal, .polaroid-reveal');
 
     const observerOptions = {
         root: null,
@@ -70,10 +102,48 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.05
     };
 
+    // Terminal Decryption Effect
+    function decryptText(element) {
+        const originalText = element.getAttribute('data-text');
+        if (!originalText) return;
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!';
+        let iteration = 0;
+        
+        clearInterval(element.decryptInterval);
+        
+        element.decryptInterval = setInterval(() => {
+            element.innerText = originalText
+                .split('')
+                .map((letter, index) => {
+                    if (index < Math.floor(iteration)) {
+                        return originalText[index];
+                    }
+                    if (letter === ' ') return ' ';
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join('');
+            
+            if (iteration >= originalText.length) {
+                clearInterval(element.decryptInterval);
+                element.innerText = originalText;
+            }
+            
+            iteration += 1 / 3; // Controls decryption speed
+        }, 30);
+    }
+
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
+                
+                // Trigger terminal decryption if the section has a title
+                const decryptTarget = entry.target.querySelector('.decrypt-text');
+                if (decryptTarget) {
+                    decryptText(decryptTarget);
+                }
+                
                 observer.unobserve(entry.target);
             }
         });
@@ -116,6 +186,168 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.style.display = "none";
             }, 300); // match css transition
         }
+    }
+
+    // 4. 3D Magnetic Cards Logic
+    const cards = document.querySelectorAll('.card-minimal');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; // max 5 deg tilt
+            const rotateY = ((x - centerX) / centerX) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease, border-color 0.3s ease, background 0.3s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none'; // remove transition for snappy mouse follow
+        });
+    });
+
+    // 5. Camera Shutter Page Transition
+    const backBtn = document.getElementById('back-to-prof');
+    const toPhotoBtn = document.getElementById('to-photo-btn');
+    const shutterOverlay = document.querySelector('.shutter-overlay');
+    
+    function triggerShutter(e, targetUrl) {
+        e.preventDefault();
+        if (shutterOverlay) {
+            shutterOverlay.classList.add('active');
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 450);
+        } else {
+            window.location.href = targetUrl;
+        }
+    }
+
+    if (backBtn) {
+        backBtn.addEventListener('click', (e) => triggerShutter(e, backBtn.href));
+    }
+    if (toPhotoBtn) {
+        toPhotoBtn.addEventListener('click', (e) => triggerShutter(e, toPhotoBtn.href));
+    }
+
+    // 6. Typewriter Effect (Hero Title)
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle && !document.body.classList.contains('photography-page')) {
+        heroTitle.innerHTML = '<span id="tw-part1"></span><span class="text-accent" id="tw-part2"></span><span id="tw-cursor">|</span>';
+        
+        const text1 = "Embedded. Electronics. ";
+        const text2 = "Innovation.";
+        const el1 = document.getElementById('tw-part1');
+        const el2 = document.getElementById('tw-part2');
+        
+        let i = 0;
+        let j = 0;
+        
+        function typeWriter() {
+            if (i < text1.length) {
+                el1.textContent += text1.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100); // Slowed down typing speed
+            } else if (j < text2.length) {
+                el2.textContent += text2.charAt(j);
+                j++;
+                setTimeout(typeWriter, 120); // Even slightly slower for the final word
+            }
+        }
+        
+        setTimeout(typeWriter, 400); // Initial delay before starting
+    }
+
+    // 7. Parallax Circuit Background
+    const circuitBg = document.querySelector('.circuit-bg');
+    if (circuitBg) {
+        window.addEventListener('scroll', () => {
+            circuitBg.style.backgroundPositionY = `${window.scrollY * 0.4}px`;
+        });
+    }
+
+    // 8. Terminal Clock (Hero Section)
+    function updateClocks() {
+        const now = new Date();
+        
+        let h = now.getHours();
+        let m = now.getMinutes();
+        let s = now.getSeconds();
+        let ms = now.getMilliseconds();
+        
+        const pad = (num, size = 2) => num.toString().padStart(size, '0');
+        
+        const term = document.getElementById('clock-terminal');
+        if (term) {
+            // Main time is green (accent), milliseconds are white (text-main)
+            term.innerHTML = `<span style="color: var(--accent);">${pad(h)}:${pad(m)}:${pad(s)}</span><span style="color: var(--text-main);">:${pad(ms, 3)}</span>`;
+        }
+        
+        requestAnimationFrame(updateClocks);
+    }
+    updateClocks();
+    
+    // 9. Microcontroller Boot Sequence
+    const bootLoader = document.getElementById('boot-loader');
+    const bootTextContainer = document.getElementById('boot-text');
+    
+    if (bootLoader && bootTextContainer && !document.body.classList.contains('photography-page')) {
+        // Prevent scrolling during boot
+        document.body.style.overflow = 'hidden';
+        
+        const bootLogs = [
+            "BIOS Date 07/13/26 14:32:11 Ver 01.00",
+            "CPU: Embedded Core 4.2GHz",
+            "Initializing hardware interfaces... [OK]",
+            "Mounting root filesystem... [OK]",
+            "Loading kernel modules... [OK]",
+            "Starting RTOS tasks... [OK]",
+            "Establishing I2C connection... [OK]",
+            "Calibrating sensors... [OK]",
+            "SYSTEM READY."
+        ];
+        
+        let logIndex = 0;
+        
+        function printBootLog() {
+            if (logIndex < bootLogs.length) {
+                const line = document.createElement('p');
+                line.className = 'boot-line';
+                line.innerText = `> ${bootLogs[logIndex]}`;
+                bootTextContainer.appendChild(line);
+                bootTextContainer.scrollTop = bootTextContainer.scrollHeight;
+                
+                logIndex++;
+                
+                // Randomize delay between 50ms and 150ms to simulate real loading
+                const delay = Math.random() * 100 + 50;
+                setTimeout(printBootLog, delay);
+            } else {
+                // Done loading
+                setTimeout(() => {
+                    bootLoader.classList.add('fade-out');
+                    document.body.style.overflow = ''; // Restore scrolling
+                    setTimeout(() => {
+                        bootLoader.remove();
+                    }, 500); // Wait for fade transition
+                }, 500); // Small pause at "SYSTEM READY."
+            }
+        }
+        
+        // Start boot sequence
+        setTimeout(printBootLog, 200);
+    } else if (bootLoader) {
+        // If on photography page or something else, remove it immediately
+        bootLoader.remove();
     }
 });
 
@@ -297,3 +529,117 @@ window.openCert = function(certId) {
         }, 10);
     }
 }
+
+// 10. Smooth Scrolling Inertia
+document.addEventListener('DOMContentLoaded', () => {
+    const smoothWrapper = document.getElementById('smooth-wrapper');
+    if (smoothWrapper && !document.body.classList.contains('photography-page')) {
+        let currentY = window.scrollY;
+        let targetY = window.scrollY;
+        const ease = 0.08; // Adjust for smoother/stiffer feel
+
+        // --- Flashlight Cursor Mask ---
+        window.addEventListener('mousemove', (e) => {
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        function updateScroll() {
+            // Smooth Scroll Physics
+            targetY = window.scrollY;
+            currentY = currentY + (targetY - currentY) * ease;
+            
+            if (Math.abs(targetY - currentY) < 0.1) {
+                currentY = targetY;
+            }
+            smoothWrapper.style.transform = `translate3d(0, ${-currentY}px, 0)`;
+
+            requestAnimationFrame(updateScroll);
+        }
+        
+        function setBodyHeight() {
+            document.body.style.height = `${smoothWrapper.getBoundingClientRect().height}px`;
+        }
+        
+        const ro = new ResizeObserver(() => setBodyHeight());
+        ro.observe(smoothWrapper);
+
+        setBodyHeight();
+        updateScroll();
+    }
+});
+
+
+// 12. Scroll Circuit Progress
+document.addEventListener('DOMContentLoaded', () => {
+    const currentFlow = document.getElementById('scroll-current');
+    const scrollLed = document.getElementById('scroll-led');
+    
+    if (!currentFlow || !scrollLed) return;
+    
+    window.addEventListener('scroll', () => {
+        // Calculate scroll percentage
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = Math.min((scrollTop / scrollHeight) * 100, 100);
+        
+        // Fill the wire
+        currentFlow.style.height = scrollPercent + '%';
+        
+        // Light up the LED if reached the bottom
+        if (scrollPercent >= 99) {
+            scrollLed.classList.add('lit');
+        } else {
+            scrollLed.classList.remove('lit');
+        }
+    });
+});
+
+// 13. Project Horizontal Slider with Dust Transition
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('project-track');
+    const navBtns = document.querySelectorAll('.project-slider-nav .nav-btn');
+    const canvas = document.getElementById('dust-canvas');
+    const cards = document.querySelectorAll('.project-slider-wrapper .slide-card');
+    let isTransitioning = false;
+    
+    if (!track || navBtns.length === 0 || !canvas) return;
+    
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('active') || isTransitioning) return;
+            isTransitioning = true;
+            
+            const oldIndex = Array.from(navBtns).findIndex(b => b.classList.contains('active'));
+            const oldCard = cards[oldIndex];
+            
+            // Remove active from all
+            navBtns.forEach(b => b.classList.remove('active'));
+            // Add active to clicked
+            btn.classList.add('active');
+            
+            const index = parseInt(btn.getAttribute('data-index'));
+            const targetCard = cards[index];
+            
+            // Initialize dust engine with both cards
+            const engine = new window.DustEngine(canvas, oldCard, targetCard);
+            
+            // Fade out all cards and move track instantly
+            cards.forEach(card => card.classList.add('faded-out'));
+            track.classList.add('no-transition');
+            track.style.transform = `translateX(-${index * 100}%)`;
+            
+            // Start the transition
+            engine.start(() => {
+                // When dust forms the word, fade in the new card seamlessly
+                targetCard.classList.remove('faded-out');
+                
+                // Ensure everything is clean
+                setTimeout(() => {
+                    isTransitioning = false;
+                    engine.stop();
+                }, 500);
+            });
+        });
+    });
+});

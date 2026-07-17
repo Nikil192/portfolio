@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,6 +17,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="photography-page">
+    <!-- Camera Shutter Transition Elements -->
+    <div class="shutter-overlay">
+        <div class="shutter-top"></div>
+        <div class="shutter-bottom"></div>
+    </div>
+
     <!-- Photographic Background Elements (Viewfinder) -->
     <div class="viewfinder-overlay">
         
@@ -35,11 +41,11 @@
     <nav class="navbar">
         <div class="nav-content">
             <a href="index.html" class="logo">
-                <i class="fa-solid fa-microchip text-accent"></i> NIKIL<span class="text-accent">.VE</span>
+                NIKIL<span class="text-accent">.VE</span>
             </a>
             <div class="nav-links" style="display: flex; align-items: center; gap: 2rem;">
-                <a href="index.html" style="font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Back to Professional Profile</a>
-                <button id="theme-toggle-photo" class="icon-btn" aria-label="Toggle Photography Theme" style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer;">
+                <a href="index.html" id="back-to-prof" style="font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Back to Professional Profile</a>
+                <button id="theme-toggle-photo" class="theme-btn" aria-label="Toggle Photography Theme" style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer;">
                     <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
@@ -110,40 +116,40 @@
 
         <!-- True Masonry Grid (Remaining Photos) -->
         <div class="photo-grid photo-reveal" style="margin-top: 4rem;">
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.30%20PM.jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.31%20PM(1).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.31%20PM.jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.32%20PM(1).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.32%20PM.jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.33%20PM(1).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.33%20PM(2).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.33%20PM(3).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.33%20PM.jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.34%20PM.jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.35%20PM(1).jpeg" alt="Photography">
             </div>
-            <div class="photo-item photo-reveal">
+            <div class="photo-item polaroid-reveal">
                 <img src="assets/photos/WhatsApp%20Image%202026-07-11%20at%203.01.35%20PM.jpeg" alt="Photography">
             </div>
         </div>

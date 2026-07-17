@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Icons (FontAwesome) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,20 +18,38 @@
 </head>
 <body>
 
+    <!-- Microcontroller Boot Sequence Loader -->
+    <div id="boot-loader">
+        <div class="boot-text" id="boot-text"></div>
+    </div>
+
+    <!-- Scroll Circuit Progress -->
+    <div id="scroll-circuit" class="hidden-mobile">
+        <div class="circuit-switch"></div>
+        <div class="circuit-wire">
+            <div class="current-flow" id="scroll-current"></div>
+        </div>
+        <div class="circuit-led" id="scroll-led"></div>
+    </div>
+
+    <!-- Camera Shutter Transition Elements -->
+    <div class="shutter-overlay">
+        <div class="shutter-top"></div>
+        <div class="shutter-bottom"></div>
+    </div>
+
     <!-- Background Pattern -->
     <div class="circuit-bg"></div>
+    <div class="circuit-bg circuit-bg-lit"></div>
 
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-content">
-            <a href="#" class="logo">
-                <i class="fa-solid fa-microchip text-accent"></i> NIKIL<span class="text-accent">.VE</span>
+            <a href="index.html" class="logo">
+                NIKIL<span class="text-accent">.VE</span>
             </a>
             <div class="nav-links">
-                <a href="#experience">Experience</a>
-                <a href="#projects">Projects</a>
-                <a href="#skills">Skills</a>
-                <a href="photography.html" class="text-accent" style="font-weight: 600;"><i class="fa-solid fa-camera-retro"></i> Photography</a>
+                <a href="photography.html" id="to-photo-btn" class="text-accent" style="font-weight: 600;"><i class="fa-solid fa-camera-retro"></i> Photography</a>
                 <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
                     <i class="fa-solid fa-sun"></i>
                 </button>
@@ -39,25 +57,32 @@
         </div>
     </nav>
 
-    <main class="container">
+    <!-- Floating System Clock -->
+    <div id="clock-terminal" style="position: fixed; right: 4rem; top: 7rem; font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: var(--text-muted); letter-spacing: 2px; opacity: 0.8; z-index: 50;">00:00:00:000</div>
+
+    <div id="smooth-wrapper">
+        <main class="container">
         
         <!-- Hero Section -->
         <section class="hero reveal">
             <div class="hero-badge">ECE Student @ IIITDM Kancheepuram</div>
             <h1 class="hero-title">Embedded. Electronics. <span class="text-accent">Innovation.</span></h1>
             <p class="hero-desc">
-                I am <span class="text-accent" style="font-weight: 600;">Nikil VE</span>, an Electronics and Communication Engineering student specializing in embedded systems, IoT architecture, and digital hardware design. I am passionate about bridging the gap between low-level hardware and intelligent software to build robust, physical solutions that solve real-world engineering problems.
+                I am <span class="text-accent" style="font-weight: 700;">Nikil VE</span>, an Electronics and Communication Engineering student specializing in embedded systems, IoT architecture, and digital hardware design. I am passionate about bridging the gap between low-level hardware and intelligent software to build robust, physical solutions that solve real-world engineering problems.
             </p>
+
             <div class="social-links">
                 <a href="https://github.com/Nikil192" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/nikil-venkatanarayanan-185243340" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.linkedin.com/in/nikil-ve" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 <a href="mailto:nikil19.ve@gmail.com" class="social-icon"><i class="fa-solid fa-envelope"></i></a>
             </div>
+
+            <!-- Removed Dot Matrix Banner -->
         </section>
 
         <!-- Education -->
         <section class="reveal mb-section">
-            <h2 class="section-title"><i class="fa-solid fa-graduation-cap text-accent"></i> Education</h2>
+            <h2 class="section-title"><span class="status-led"></span><i class="fa-solid fa-graduation-cap text-accent"></i> <span class="decrypt-text" data-text="Education">Education</span></h2>
             <div class="card-minimal">
                 <div class="flex-between">
                     <div>
@@ -80,7 +105,7 @@
 
         <!-- Experience Section -->
         <section id="experience" class="reveal mb-section">
-            <h2 class="section-title"><i class="fa-solid fa-briefcase text-accent"></i> Experience</h2>
+            <h2 class="section-title"><span class="status-led"></span><i class="fa-solid fa-briefcase text-accent"></i> <span class="decrypt-text" data-text="Experience">Experience</span></h2>
             
             <div class="timeline">
                 
@@ -171,53 +196,74 @@
 
         <!-- Projects Section -->
         <section id="projects" class="reveal mb-section">
-            <h2 class="section-title"><i class="fa-solid fa-code-branch text-accent"></i> Engineering Projects</h2>
-            <div class="grid-2">
-                
-                <div class="card">
-                    <h3 class="card-title">HoverMouse</h3>
-                    <p class="card-desc">Wireless Air Mouse using ESP32-S2 and MPU-6050 for real-time motion tracking and cursor control via Wi-Fi UDP.</p>
-                    <div class="tags">
-                        <span>ESP32-S2</span>
-                        <span>MPU-6050</span>
-                        <span>Wi-Fi UDP</span>
+            <h2 class="section-title"><span class="status-led"></span><i class="fa-solid fa-code-branch text-accent"></i> <span class="decrypt-text" data-text="Engineering Projects">Engineering Projects</span></h2>
+            <div class="project-slider-wrapper">
+                <canvas id="dust-canvas"></canvas>
+                <div class="project-slider-track" id="project-track">
+                    
+                    <div class="card slide-card">
+                        <h3 class="card-title">HoverMouse</h3>
+                        <p class="card-desc">Wireless Air Mouse using ESP32-S2 and MPU-6050 for real-time motion tracking and cursor control via Wi-Fi UDP.</p>
+                        <div class="tags">
+                            <span>ESP32-S2</span>
+                            <span>MPU-6050</span>
+                            <span>Wi-Fi UDP</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3 class="card-title">Acoustic Radar</h3>
-                    <p class="card-desc">Automated speaker-tracking system using ESP32-S3 with directional audio processing and motorized webcam control.</p>
-                    <div class="tags">
-                        <span>ESP32-S3</span>
-                        <span>Signal Processing</span>
+                    <div class="card slide-card">
+                        <h3 class="card-title">Acoustic Radar</h3>
+                        <p class="card-desc">Automated speaker-tracking system using ESP32-S3 with directional audio processing and motorized webcam control.</p>
+                        <div class="tags">
+                            <span>ESP32-S3</span>
+                            <span>Signal Processing</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3 class="card-title">GridGuard</h3>
-                    <p class="card-desc">Smart Power Line Fall Detection IoT system with ESP32 and LoRa communication to prevent electrical hazards.</p>
-                    <div class="tags">
-                        <span>ESP32</span>
-                        <span>LoRa</span>
-                        <span>IoT</span>
+                    <div class="card slide-card">
+                        <h3 class="card-title">GridGuard</h3>
+                        <p class="card-desc">Smart Power Line Fall Detection IoT system with ESP32 and LoRa communication to prevent electrical hazards.</p>
+                        <div class="tags">
+                            <span>ESP32</span>
+                            <span>LoRa</span>
+                            <span>IoT</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3 class="card-title">FlowSense</h3>
-                    <p class="card-desc">Smart Footfall Analytics System utilizing dual IR/ToF sensors and an ESP32 backend to visualize real-time web dashboard analytics.</p>
-                    <div class="tags">
-                        <span>ESP32</span>
-                        <span>IR/ToF Sensors</span>
+                    <div class="card slide-card">
+                        <h3 class="card-title">FlowSense</h3>
+                        <p class="card-desc">Smart Footfall Analytics System utilizing dual IR/ToF sensors and an ESP32 backend to visualize real-time web dashboard analytics.</p>
+                        <div class="tags">
+                            <span>ESP32</span>
+                            <span>IR/ToF Sensors</span>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="card slide-card">
+                        <h3 class="card-title">Linux Sys Analyzer</h3>
+                        <p class="card-desc">Python-based Linux monitor using psutil for real-time CPU, memory, and network analytics via a clean CLI interface.</p>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>psutil</span>
+                            <span>CLI</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="project-slider-nav">
+                <button class="nav-btn active" data-index="0">1</button>
+                <button class="nav-btn" data-index="1">2</button>
+                <button class="nav-btn" data-index="2">3</button>
+                <button class="nav-btn" data-index="3">4</button>
+                <button class="nav-btn" data-index="4">5</button>
             </div>
         </section>
 
         <!-- Skills Section -->
         <section id="skills" class="reveal mb-section">
-            <h2 class="section-title"><i class="fa-solid fa-bolt text-accent"></i> Toolkit & Certifications</h2>
+            <h2 class="section-title"><span class="status-led"></span><i class="fa-solid fa-bolt text-accent"></i> <span class="decrypt-text" data-text="Toolkit & Certifications">Toolkit & Certifications</span></h2>
             
             <div class="grid-2">
                 <div>
@@ -292,6 +338,7 @@
     <footer>
         <p>Built with <i class="fa-solid fa-bolt text-accent"></i> by Nikil VE. Hosted locally.</p>
     </footer>
+    </div>
 
     <!-- Report Modal -->
     <div id="reportModal" class="modal">
@@ -302,7 +349,9 @@
             </div>
         </div>
     </div>
-
+    <!-- Scripts -->
+    <script src="arcs.js"></script>
+    <script src="dust.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
